@@ -1,15 +1,11 @@
 package mqtt
 
 type CLI interface {
-	// emqx Config methods
-	ConfigSelect(name string) error
-	ConfigInfo(name string) (string, error)
-	ConfigList() ([]string, error)
 	// emqx Cluster methods
-	ClusterCheckConnection() (string, error)
-	ClusterCheckHealth() (string, error)
-	ClusterTopics() ([]string, error)
-	ClusterInfo() (string, error)
-	// emqx Benchmark methods
-	Benchmark() error
+	CheckConnection() (string, error)
+	CheckHealth() (string, error)
+	Topics() ([]string, error)
+	// emqx Benchmakr methods
+	Publish(topic, message string) error
+	Subscribe(topic string) chan string
 }

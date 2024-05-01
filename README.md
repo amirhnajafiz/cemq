@@ -20,7 +20,6 @@ A EMQX client-cli to test and benchmark your EMQX clusters.
     - connection (sc)
     - health (sc)
   - topics (sc)
-  - info (sc)
 - bench (c)
   - topic (fl)
   - pub (fl)
