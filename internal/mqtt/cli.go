@@ -1,8 +1,6 @@
 package mqtt
 
 import (
-	"fmt"
-
 	"github.com/amirhnajafiz/cemq/pkg/model"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -24,7 +22,7 @@ type CLI interface {
 	Subscribe(topic string) chan []byte
 }
 
-func NewCLI(cfg *model.Config) (CLI, error) {
+func NewCLI(cfg *model.Config) CLI {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(cfg.Server)
 
@@ -36,15 +34,8 @@ func NewCLI(cfg *model.Config) (CLI, error) {
 	}
 
 	client := mqtt.NewClient(opts)
-	c := &cli{
-		conn: client,
-	}
-
-	if _, err := c.CheckConnection(); err != nil {
-		return nil, fmt.Errorf("%v: %v", ErrConnection, err)
-	}
 
 	return &cli{
 		conn: client,
-	}, nil
+	}
 }
