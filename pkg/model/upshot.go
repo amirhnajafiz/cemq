@@ -1,15 +1,11 @@
 package model
 
-import (
-	"time"
-)
-
-type Result struct {
-	ID        string
-	Duration  time.Time
-	Benchmark *Benchmark
-	Pubs      []*PubStat
-	Subs      []*SubStat
+// Upshot stores a benchmark result
+type Upshot struct {
+	ID    string
+	Topic string
+	Pubs  []*PubStat
+	Subs  []*SubStat
 }
 
 type PubStat struct {
