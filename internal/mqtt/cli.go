@@ -1,6 +1,10 @@
 package mqtt
 
-import "github.com/amirhnajafiz/cemq/pkg/model"
+import (
+	"github.com/amirhnajafiz/cemq/pkg/model"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+)
 
 // CLI is used to simplfy the usage of MQTT cluster by CEMQ components
 type CLI interface {
@@ -19,5 +23,25 @@ type CLI interface {
 }
 
 func NewCLI(cfg *model.Config) (CLI, error) {
-	return &cli{}, nil
+	opts := mqtt.NewClientOptions()
+	opts.AddBroker(cfg.Server)
+
+	if len(cfg.Username) > 0 {
+		opts.SetUsername(cfg.Username)
+	}
+	if len(cfg.Password) > 0 {
+		opts.SetPassword(cfg.Password)
+	}
+
+	client := mqtt.NewClient(opts)
+	token := client.Connect()
+
+	if token.Error() != nil {
+		return nil, token.Error()
+	}
+
+	return &cli{
+		conn:  client,
+		token: token,
+	}, nil
 }
