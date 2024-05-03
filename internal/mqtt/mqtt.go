@@ -3,8 +3,7 @@ package mqtt
 import mqtt "github.com/eclipse/paho.mqtt.golang"
 
 type cli struct {
-	conn  mqtt.Client
-	token mqtt.Token
+	conn mqtt.Client
 }
 
 func (c cli) CheckConnection() (string, error) {

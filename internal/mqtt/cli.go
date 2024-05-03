@@ -1,6 +1,8 @@
 package mqtt
 
 import (
+	"fmt"
+
 	"github.com/amirhnajafiz/cemq/pkg/model"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -34,14 +36,17 @@ func NewCLI(cfg *model.Config) (CLI, error) {
 	}
 
 	client := mqtt.NewClient(opts)
+
 	token := client.Connect()
+	defer func() {
+		token.Done()
+	}()
 
 	if token.Error() != nil {
-		return nil, token.Error()
+		return nil, fmt.Errorf("%v: %v", ErrConnection, token.Error())
 	}
 
 	return &cli{
-		conn:  client,
-		token: token,
+		conn: client,
 	}, nil
 }
