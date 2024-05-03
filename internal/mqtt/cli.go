@@ -28,7 +28,7 @@ type CLI interface {
 // the config instance will be read from config file and passed as a model.config type
 func NewCLI(cfg *model.Config) CLI {
 	opts := mqtt.NewClientOptions()
-	opts.AddBroker(cfg.Server)
+	opts.AddBroker(cfg.URL())
 
 	if len(cfg.Username) > 0 {
 		opts.SetUsername(cfg.Username)
