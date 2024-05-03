@@ -4,10 +4,13 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
+// cli is the core of mqtt package, in which we implemented the logic of methods that
+// are used to communicate with a EMQX cluster
 type cli struct {
 	conn mqtt.Client
 }
 
+// connect is an internal method used to establish a connection to EMQX cluster
 func (c cli) connect() error {
 	token := c.conn.Connect()
 	defer func() {

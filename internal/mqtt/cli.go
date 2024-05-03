@@ -24,6 +24,8 @@ type CLI interface {
 	Subscribe(topic string) chan []byte
 }
 
+// NewCLI creates a cli instance with client options in order to connect to the current EMQX cluster;
+// the config instance will be read from config file and passed as a model.config type
 func NewCLI(cfg *model.Config) CLI {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(cfg.Server)
