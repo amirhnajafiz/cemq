@@ -8,6 +8,8 @@ import (
 
 // CLI is used to simplfy the usage of MQTT cluster by CEMQ components
 type CLI interface {
+	// register is used to establish a new connection before running crutial methods like Topics, Publish, ...
+	Register() error
 	// emqx Cluster methods
 	// CheckConnection is used to check the connection health to the current EMQX cluster
 	CheckConnection() (string, error)

@@ -21,6 +21,10 @@ func (c cli) connect() error {
 	return nil
 }
 
+func (c cli) Register() error {
+	return c.connect()
+}
+
 func (c cli) CheckConnection() (string, error) {
 	if err := c.connect(); err != nil {
 		return ErrConnection.Error(), err
