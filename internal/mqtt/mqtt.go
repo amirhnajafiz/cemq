@@ -1,6 +1,8 @@
 package mqtt
 
 import (
+	"time"
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -33,7 +35,27 @@ func (c cli) CheckConnection() (string, error) {
 }
 
 func (c cli) CheckHealth() (string, error) {
-	return "", nil
+	done := make(chan bool)
+	topic := "testing-cluster-health"
+	msg := "empty-msg"
+
+	if token := c.conn.Subscribe(topic, 0, func(_ mqtt.Client, m mqtt.Message) {
+		m.Ack()
+
+		done <- true
+	}); token.Wait() && token.Error() != nil {
+		return "", token.Error()
+	}
+
+	start := time.Now()
+
+	if token := c.conn.Publish(topic, 0, true, msg); token.Wait() && token.Error() != nil {
+		return "", token.Error()
+	}
+
+	<-done
+
+	return time.Since(start).String(), nil
 }
 
 func (c cli) Topics() ([]string, error) {
