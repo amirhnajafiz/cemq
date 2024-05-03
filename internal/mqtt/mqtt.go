@@ -1,13 +1,26 @@
 package mqtt
 
-import mqtt "github.com/eclipse/paho.mqtt.golang"
+import (
+	"fmt"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+)
 
 type cli struct {
 	conn mqtt.Client
 }
 
 func (c cli) CheckConnection() (string, error) {
-	return "", nil
+	token := c.conn.Connect()
+	defer func() {
+		token.Done()
+	}()
+
+	if token.Error() != nil {
+		return "", fmt.Errorf("%v: %v", ErrConnection, token.Error())
+	}
+
+	return "connected!", nil
 }
 
 func (c cli) CheckHealth() (string, error) {

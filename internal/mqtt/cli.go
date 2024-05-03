@@ -36,14 +36,12 @@ func NewCLI(cfg *model.Config) (CLI, error) {
 	}
 
 	client := mqtt.NewClient(opts)
+	c := &cli{
+		conn: client,
+	}
 
-	token := client.Connect()
-	defer func() {
-		token.Done()
-	}()
-
-	if token.Error() != nil {
-		return nil, fmt.Errorf("%v: %v", ErrConnection, token.Error())
+	if _, err := c.CheckConnection(); err != nil {
+		return nil, fmt.Errorf("%v: %v", ErrConnection, err)
 	}
 
 	return &cli{
