@@ -11,7 +11,7 @@ type cli struct {
 }
 
 // connect is an internal method used to establish a connection to EMQX cluster
-func (c cli) connect() error {
+func (c cli) Connect() error {
 	token := c.conn.Connect()
 	defer func() {
 		token.Done()
@@ -24,12 +24,8 @@ func (c cli) connect() error {
 	return nil
 }
 
-func (c cli) Register() error {
-	return c.connect()
-}
-
 func (c cli) CheckConnection() (string, error) {
-	if err := c.connect(); err != nil {
+	if err := c.Connect(); err != nil {
 		return ErrConnection.Error(), err
 	}
 
