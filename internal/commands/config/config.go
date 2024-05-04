@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
 )
 
 type config struct {
@@ -10,7 +9,5 @@ type config struct {
 }
 
 func (c config) Select(name string) string {
-	path := fmt.Sprintf("%s/%s.json", c.DirPath, name)
-
-	os.Setenv("CEMQ_CONTEXT", path)
+	path := fmt.Sprintf("%s/config/%s.json", c.DirPath, name)
 }
