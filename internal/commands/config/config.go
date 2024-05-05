@@ -9,5 +9,5 @@ type config struct {
 }
 
 func (c config) Select(name string) string {
-	path := fmt.Sprintf("%s/config/%s.json", c.DirPath, name)
+	return fmt.Sprintf("%s/config/%s.json", c.DirPath, name)
 }
