@@ -1,6 +1,9 @@
 package mqtt
 
 import (
+	"log"
+	"os"
+
 	"github.com/amirhnajafiz/cemq/pkg/model"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -26,7 +29,12 @@ type CLI interface {
 
 // NewCLI creates a cli instance with client options in order to connect to the current EMQX cluster;
 // the config instance will be read from config file and passed as a model.config type
-func NewCLI(cfg *model.Config) CLI {
+func NewCLI(cfg *model.Config, debug bool) CLI {
+	if debug {
+		mqtt.DEBUG = log.New(os.Stdout, "", 0)
+		mqtt.ERROR = log.New(os.Stdout, "", 0)
+	}
+
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(cfg.URL())
 
