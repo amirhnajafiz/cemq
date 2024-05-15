@@ -8,19 +8,17 @@ A EMQX client-cli to test and benchmark your EMQX clusters.
 - Config
 - Progress Bar
 
-## Commands & Sub-commands
+## Commands overview
 
-- help (fl)
-- config (c)
-  - select (sc)
-  - list (sc)
-  - info (sc)
-- cluster (c)
-  - connection (sc)
-  - health (sc)
-- bench (c)
-  - topic (fl)
-  - pub (fl)
-  - sub (fl)
-  - progress (fl)
-  - json (fl)
+| Command | Description | Flags | SubCommands |
+|:-------------:|------------------|-------|-----------------------|
+| help | returns a full guide and description about CEMQ commands | - | - |
+| config | manages the CEMQ cluster configuration | - | select, list, info |
+| cluster | handles the cluster connection and health commands | - | connection, health |
+| bench | runs benchmarks on the selected EMQX cluster | topic, pub, sub, progress | - |
+
+### Commands details
+
+#### config
+
+All EMQX config files are in ```.json``` format and stored in ```~/.config/cemq/configs``` directory. There is also a ```config.txt``` file which stores the current selection.
