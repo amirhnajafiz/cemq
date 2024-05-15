@@ -18,8 +18,6 @@ type CLI interface {
 	CheckConnection() (string, error)
 	// CheckHealth publishes over a testing topic in order to check the current EMQX cluster health
 	CheckHealth() (string, error)
-	// Topics aims to return the current topics that are available on the current EMQX cluster
-	Topics() ([]string, error)
 	// emqx Benchmakr methods
 	// Publish is used to send a bytes data to the current EMQX cluster over a topic
 	Publish(topic string, message []byte) error
@@ -36,7 +34,7 @@ func NewCLI(cfg *model.Config, debug bool) CLI {
 	}
 
 	opts := mqtt.NewClientOptions()
-	opts.AddBroker(cfg.URL())
+	opts.AddBroker(cfg.Server)
 
 	if len(cfg.Username) > 0 {
 		opts.SetUsername(cfg.Username)
