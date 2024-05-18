@@ -2,16 +2,18 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/amirhnajafiz/cemq/internal/commands/cluster"
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
+	"github.com/amirhnajafiz/cemq/pkg/model"
 
 	"github.com/spf13/cobra"
 )
 
 // Cluster command is used to handle cluster check and connection methods
 type Cluster struct {
-	conn mqtt.CLI
+	Cfg *model.Config
 }
 
 func (c Cluster) Command() *cobra.Command {
@@ -22,8 +24,14 @@ func (c Cluster) Command() *cobra.Command {
 		Use:   "cluster",
 	}
 
+	// create a new MQTT connection
+	conn := mqtt.NewCLI(c.Cfg, true)
+	if err := conn.Connect(); err != nil {
+		log.Fatalf("failed to reach cluster: %v", err)
+	}
+
 	// creating the manager
-	manager := cluster.New(c.conn)
+	manager := cluster.New(conn)
 
 	// add sub-commands
 	// cluster health

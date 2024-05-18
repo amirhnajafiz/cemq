@@ -9,6 +9,7 @@ import (
 // Bench command is used to handle benchmark operations
 type Bench struct {
 	Input *model.Benchmark
+	Cfg   *model.Config
 }
 
 func (b Bench) Command() *cobra.Command {
