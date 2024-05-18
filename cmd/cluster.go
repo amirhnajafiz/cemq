@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/amirhnajafiz/cemq/internal/commands/cluster"
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
@@ -27,9 +26,6 @@ func (c Cluster) Command() *cobra.Command {
 
 	// create a new MQTT connection
 	conn := mqtt.NewCLI(c.Cfg, c.Debug)
-	if err := conn.Connect(); err != nil {
-		log.Fatalf("failed to reach cluster: %v", err)
-	}
 
 	// creating the manager
 	manager := cluster.New(conn)
