@@ -7,9 +7,9 @@ type Bench struct{}
 
 func (b Bench) Command() *cobra.Command {
 	return &cobra.Command{
-		Short: "bench",
-		Long:  "benchmark",
-		Use:   "benchmark the current EMQX cluster",
+		Short: "Benchmark the current EMQX cluster",
+		Long:  "Benchmark the current EMQX cluster by giving pubs, subs, and topics",
+		Use:   "bench",
 		Run: func(_ *cobra.Command, _ []string) {
 			b.main()
 		},

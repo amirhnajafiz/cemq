@@ -12,7 +12,7 @@ func WriteJSON[T any](path string, instance *T) error {
 		return err
 	}
 
-	if err := os.WriteFile(path, bytes, os.ModeAppend); err != nil {
+	if err := os.WriteFile(path, bytes, 0700); err != nil {
 		return err
 	}
 

@@ -13,9 +13,9 @@ type Config struct{}
 
 func (c Config) Command() *cobra.Command {
 	root := &cobra.Command{
-		Use:   "config command handles config operations",
-		Short: "config",
-		Long:  "config",
+		Short: "Config handles config operations",
+		Long:  "Config command hanldes config operations for list, view, and change config files",
+		Use:   "config",
 	}
 
 	manager := config.New()
@@ -23,25 +23,26 @@ func (c Config) Command() *cobra.Command {
 	// add sub-commands
 	// config select {context}
 	root.AddCommand(&cobra.Command{
-		Short: "select",
-		Long:  "select",
-		Use:   "select is used to change the config context",
+		Short: "Select is used to change the config context",
+		Long:  "Select is used to change the config context by setting the context name without json extention",
+		Use:   "select [context]",
+		Args:  cobra.MatchAll(cobra.ExactArgs(1)),
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println(manager.Select(args[0]))
 		},
 	})
 	root.AddCommand(&cobra.Command{
-		Short: "info",
-		Long:  "info",
-		Use:   "info is used to get current context info",
+		Short: "Info is used to get current context info",
+		Long:  "Info reads the current context and prints its data as json output",
+		Use:   "info",
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println(manager.Info())
 		},
 	})
 	root.AddCommand(&cobra.Command{
-		Short: "list",
-		Long:  "list",
-		Use:   "list is used to print the list of current configs",
+		Short: "List is used to print the list of current configs",
+		Long:  "List is used to print the list of current configs",
+		Use:   "list",
 		Run: func(_ *cobra.Command, args []string) {
 			list := manager.List()
 			for _, item := range list {

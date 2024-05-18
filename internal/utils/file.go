@@ -1,6 +1,9 @@
 package utils
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 // ReadFile returns the string value of a file
 func ReadFile(path string) (string, error) {
@@ -14,7 +17,7 @@ func ReadFile(path string) (string, error) {
 
 // WriteFile creates a new file with given content
 func WriteFile(path, content string) error {
-	if err := os.WriteFile(path, []byte(content), os.FileMode(os.O_RDWR)); err != nil {
+	if err := os.WriteFile(path, []byte(content), 0700); err != nil {
 		return err
 	}
 
@@ -23,7 +26,9 @@ func WriteFile(path, content string) error {
 
 // Mkdir is used to created a directory
 func Mkdir(path string) {
-	os.Mkdir(path, os.ModeDir)
+	if err := os.Mkdir(path, 0700); err != nil {
+		log.Println(err)
+	}
 }
 
 // Exists check the existance of a file or folder

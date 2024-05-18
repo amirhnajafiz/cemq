@@ -42,7 +42,7 @@ func (c config) Select(name string) string {
 	out := fmt.Sprintf("%s/%s.json", adr.GetConfigs(), name)
 
 	if ok, err := utils.Exists(out); err == nil && !ok {
-		return fmt.Errorf("context %s not found", err).Error()
+		return fmt.Errorf("context %s not found", name).Error()
 	}
 
 	if err := utils.WriteFile(path, out); err != nil {
