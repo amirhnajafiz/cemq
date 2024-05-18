@@ -16,6 +16,7 @@ func main() {
 	root.AddCommand(
 		cmd.Config{}.Command(),
 		cmd.Bench{}.Command(),
+		cmd.Cluster{}.Command(),
 	)
 
 	// execute cobra root command

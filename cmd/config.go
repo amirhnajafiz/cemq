@@ -12,12 +12,14 @@ import (
 type Config struct{}
 
 func (c Config) Command() *cobra.Command {
+	// creating root command
 	root := &cobra.Command{
 		Short: "Config handles config operations",
 		Long:  "Config command hanldes config operations for list, view, and change config files",
 		Use:   "config",
 	}
 
+	// creating the manager
 	manager := config.New()
 
 	// add sub-commands
@@ -31,6 +33,7 @@ func (c Config) Command() *cobra.Command {
 			fmt.Println(manager.Select(args[0]))
 		},
 	})
+	// config info
 	root.AddCommand(&cobra.Command{
 		Short: "Info is used to get current context info",
 		Long:  "Info reads the current context and prints its data as json output",
@@ -39,6 +42,7 @@ func (c Config) Command() *cobra.Command {
 			fmt.Println(manager.Info())
 		},
 	})
+	// config list
 	root.AddCommand(&cobra.Command{
 		Short: "List is used to print the list of current configs",
 		Long:  "List is used to print the list of current configs",
