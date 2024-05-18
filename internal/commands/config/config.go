@@ -34,12 +34,17 @@ func (c config) List() []string {
 
 // Info reads the current config file
 func (c config) Info() string {
-	obj, err := adr.LoadCurrentConfig()
+	path, err := utils.ReadFile(adr.GetContext())
+	if err != nil {
+		return fmt.Errorf("failed to read config.txt file: %w", err).Error()
+	}
+
+	data, err := utils.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("failed to read current config file: %w", err).Error()
 	}
 
-	return fmt.Sprintf("%v", obj)
+	return utils.JsonPrettyPrint(data)
 }
 
 // Select method is used to change the current context

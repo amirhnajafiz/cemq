@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 )
@@ -33,4 +34,16 @@ func ReadJSON[T any](path string) (*T, error) {
 	}
 
 	return &instance, nil
+}
+
+// JsonPrettyPrint is used to convert JSON raw string to pretty JSON string
+func JsonPrettyPrint(in string) string {
+	var out bytes.Buffer
+
+	err := json.Indent(&out, []byte(in), "", "  ")
+	if err != nil {
+		return in
+	}
+
+	return out.String()
 }
