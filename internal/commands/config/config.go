@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/amirhnajafiz/cemq/internal/utils"
 	"github.com/amirhnajafiz/cemq/pkg/adr"
@@ -16,7 +17,12 @@ func (c config) List() []string {
 	fileList := []string{}
 
 	if err := filepath.Walk(adr.GetConfigs(), func(path string, f os.FileInfo, err error) error {
-		fileList = append(fileList, path)
+		name := f.Name()
+		if name == "configs" {
+			return nil
+		}
+
+		fileList = append(fileList, strings.Replace(name, ".json", "", 1))
 
 		return nil
 	}); err != nil {
