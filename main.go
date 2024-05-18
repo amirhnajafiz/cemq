@@ -3,30 +3,23 @@ package main
 import (
 	"log"
 
-	"github.com/amirhnajafiz/cemq/internal/mqtt"
-	"github.com/amirhnajafiz/cemq/pkg/model"
+	"github.com/amirhnajafiz/cemq/cmd"
+
+	"github.com/spf13/cobra"
 )
 
 func main() {
 	// using cobra-cli for defining commands and subcommands
-	// root := cobra.Command{}
+	root := cobra.Command{}
 
-	// // execute cobra root command
-	// if err := root.Execute(); err != nil {
-	// 	panic(err)
-	// }
+	// add commands
+	root.AddCommand(
+		cmd.Config{}.Command(),
+		cmd.Bench{}.Command(),
+	)
 
-	cli := mqtt.NewCLI(&model.Config{}, false)
-
-	if msg, err := cli.CheckConnection(); err != nil {
-		log.Println(err)
-	} else {
-		log.Println(msg)
-	}
-
-	if msg, err := cli.CheckHealth(); err != nil {
-		log.Println(err)
-	} else {
-		log.Println(msg)
+	// execute cobra root command
+	if err := root.Execute(); err != nil {
+		log.Fatal(err)
 	}
 }

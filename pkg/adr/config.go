@@ -5,8 +5,9 @@ import (
 	"github.com/amirhnajafiz/cemq/pkg/model"
 )
 
-// LoadConfig is used to read the current config module into a Config struct
-func LoadConfig() (*model.Config, error) {
+// LoadCurrentConfig is used to read the current config module into a Config struct
+// to be used accross CEMQ sub-commands
+func LoadCurrentConfig() (*model.Config, error) {
 	config, err := utils.ReadFile(GetContext())
 	if err != nil {
 		return nil, err

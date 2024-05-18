@@ -17,6 +17,7 @@ func (c config) List() []string {
 
 	if err := filepath.Walk(adr.GetConfigs(), func(path string, f os.FileInfo, err error) error {
 		fileList = append(fileList, path)
+
 		return nil
 	}); err != nil {
 		return fileList
@@ -27,7 +28,7 @@ func (c config) List() []string {
 
 // Info reads the current config file
 func (c config) Info() string {
-	obj, err := adr.LoadConfig()
+	obj, err := adr.LoadCurrentConfig()
 	if err != nil {
 		return fmt.Errorf("failed to read current config file: %w", err).Error()
 	}
