@@ -22,7 +22,7 @@ type CLI interface {
 	// Publish is used to send a bytes data to the current EMQX cluster over a topic
 	Publish(topic string, message []byte) error
 	// Subscribe opens a channel in order to recieve events from a topic over the current EMQX cluster
-	Subscribe(topic string) chan []byte
+	Subscribe(topic string) (chan []byte, error)
 }
 
 // NewCLI creates a cli instance with client options in order to connect to the current EMQX cluster;

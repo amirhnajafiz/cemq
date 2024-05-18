@@ -60,9 +60,23 @@ func (c cli) CheckHealth() (string, error) {
 }
 
 func (c cli) Publish(topic string, message []byte) error {
+	if token := c.conn.Publish(topic, 0, true, message); token.Wait() && token.Error() != nil {
+		return token.Error()
+	}
+
 	return nil
 }
 
-func (c cli) Subscribe(topic string) chan []byte {
-	return nil
+func (c cli) Subscribe(topic string) (chan []byte, error) {
+	channel := make(chan []byte)
+
+	if token := c.conn.Subscribe(topic, 0, func(_ mqtt.Client, m mqtt.Message) {
+		m.Ack()
+
+		channel <- m.Payload()
+	}); token.Wait() && token.Error() != nil {
+		return channel, token.Error()
+	}
+
+	return channel, nil
 }
