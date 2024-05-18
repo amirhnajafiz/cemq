@@ -14,8 +14,8 @@ type Config struct{}
 func (c Config) Command() *cobra.Command {
 	// creating root command
 	root := &cobra.Command{
-		Short: "Config handles config operations",
-		Long:  "Config command hanldes config operations for list, view, and change config files",
+		Short: "Config is used for configuration operations",
+		Long:  "Config command hanldes config operations for list, view, and change CEMQ config files",
 		Use:   "config",
 	}
 
@@ -25,10 +25,11 @@ func (c Config) Command() *cobra.Command {
 	// add sub-commands
 	// config select {context}
 	root.AddCommand(&cobra.Command{
-		Short: "Select is used to change the config context",
-		Long:  "Select is used to change the config context by setting the context name without json extention",
-		Use:   "select [context]",
-		Args:  cobra.MatchAll(cobra.ExactArgs(1)),
+		Short:   "Select is used to change the config context",
+		Long:    "Select is used to change the config context by setting the context name without json extention",
+		Use:     "select [context]",
+		Example: "select default",
+		Args:    cobra.MatchAll(cobra.ExactArgs(1)),
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println(manager.Select(args[0]))
 		},
