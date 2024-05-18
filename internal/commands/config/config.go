@@ -2,12 +2,29 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/amirhnajafiz/cemq/internal/utils"
 	"github.com/amirhnajafiz/cemq/pkg/model"
 )
 
 type config struct{}
+
+// List returns the list of config files
+func (c config) List() []string {
+	root := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONFIGS)
+
+	fileList := []string{}
+	if err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+		fileList = append(fileList, path)
+		return nil
+	}); err != nil {
+		return fileList
+	}
+
+	return fileList
+}
 
 // Info reads the current config file
 func (c config) Info() string {

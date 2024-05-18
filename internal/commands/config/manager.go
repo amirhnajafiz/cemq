@@ -9,3 +9,7 @@ type Manager interface {
 	List() []string
 	Info() string
 }
+
+func New() Manager {
+	return &config{}
+}
