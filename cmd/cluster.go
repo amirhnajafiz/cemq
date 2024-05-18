@@ -16,7 +16,18 @@ func (c Cluster) Command() *cobra.Command {
 	}
 
 	// add sub-commands
-
+	// cluster health
+	root.AddCommand(&cobra.Command{
+		Short: "Cluster health check",
+		Long:  "Cluster health check uses ping-pong mechanisem to check cluster availability",
+		Use:   "health",
+	})
+	// cluster connection
+	root.AddCommand(&cobra.Command{
+		Short: "Cluster connection check",
+		Long:  "Cluster connection check only checks the EMQX cluster reachability",
+		Use:   "connection",
+	})
 	// finish sub-commands
 
 	return root
