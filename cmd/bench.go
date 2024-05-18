@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"log"
+
+	"github.com/amirhnajafiz/cemq/internal/mqtt"
 	"github.com/amirhnajafiz/cemq/pkg/model"
 
 	"github.com/spf13/cobra"
@@ -35,5 +38,11 @@ func (b Bench) Command() *cobra.Command {
 }
 
 func (b Bench) main() {
+	// create a new MQTT connection
+	conn := mqtt.NewCLI(b.Cfg, b.Debug)
 
+	// check connection
+	if err := conn.Connect(); err != nil {
+		log.Fatalf("cannot access the cluster: %v", err)
+	}
 }
