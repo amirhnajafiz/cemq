@@ -6,17 +6,16 @@ import (
 	"path/filepath"
 
 	"github.com/amirhnajafiz/cemq/internal/utils"
-	"github.com/amirhnajafiz/cemq/pkg/model"
+	"github.com/amirhnajafiz/cemq/pkg/adr"
 )
 
 type config struct{}
 
 // List returns the list of config files
 func (c config) List() []string {
-	root := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONFIGS)
-
 	fileList := []string{}
-	if err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+
+	if err := filepath.Walk(adr.GetConfigs(), func(path string, f os.FileInfo, err error) error {
 		fileList = append(fileList, path)
 		return nil
 	}); err != nil {
@@ -28,16 +27,9 @@ func (c config) List() []string {
 
 // Info reads the current config file
 func (c config) Info() string {
-	path := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONTEXT)
-
-	config, err := utils.ReadFile(path)
+	obj, err := adr.LoadConfig()
 	if err != nil {
-		return "failed to read current config!"
-	}
-
-	obj, err := utils.ReadJSON[*model.Config](config)
-	if err != nil {
-		return fmt.Errorf("failed to read %s config file: %w", config, err).Error()
+		return fmt.Errorf("failed to read current config file: %w", err).Error()
 	}
 
 	return fmt.Sprintf("%v", obj)
@@ -45,8 +37,8 @@ func (c config) Info() string {
 
 // Select method is used to change the current context
 func (c config) Select(name string) string {
-	path := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONTEXT)
-	out := fmt.Sprintf("%s/%s/%s/%s.json", ROOT, BASE, CONFIGS, name)
+	path := adr.GetContext()
+	out := fmt.Sprintf("%s/%s.json", adr.GetConfigs(), name)
 
 	if ok, err := utils.Exists(out); err == nil && !ok {
 		return fmt.Errorf("context %s not found", err).Error()
