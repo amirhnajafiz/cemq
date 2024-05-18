@@ -13,7 +13,8 @@ import (
 
 // Cluster command is used to handle cluster check and connection methods
 type Cluster struct {
-	Cfg *model.Config
+	Cfg   *model.Config
+	Debug bool
 }
 
 func (c Cluster) Command() *cobra.Command {
@@ -25,7 +26,7 @@ func (c Cluster) Command() *cobra.Command {
 	}
 
 	// create a new MQTT connection
-	conn := mqtt.NewCLI(c.Cfg, true)
+	conn := mqtt.NewCLI(c.Cfg, c.Debug)
 	if err := conn.Connect(); err != nil {
 		log.Fatalf("failed to reach cluster: %v", err)
 	}

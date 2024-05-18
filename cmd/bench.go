@@ -10,6 +10,7 @@ import (
 type Bench struct {
 	Input *model.Benchmark
 	Cfg   *model.Config
+	Debug bool
 }
 
 func (b Bench) Command() *cobra.Command {

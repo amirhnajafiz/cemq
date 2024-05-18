@@ -13,6 +13,13 @@ func main() {
 	// using cobra-cli for defining commands and subcommands
 	root := cobra.Command{}
 
+	var (
+		debug bool
+	)
+
+	// add base flags
+	root.PersistentFlags().BoolVar(&debug, "debug", false, "enabling MQTT debug messages")
+
 	// load configs
 	cfg, err := config.Load()
 	if err != nil {
@@ -23,10 +30,12 @@ func main() {
 	root.AddCommand(
 		cmd.Config{}.Command(),
 		cmd.Bench{
-			Cfg: cfg,
+			Cfg:   cfg,
+			Debug: debug,
 		}.Command(),
 		cmd.Cluster{
-			Cfg: cfg,
+			Cfg:   cfg,
+			Debug: debug,
 		}.Command(),
 	)
 
