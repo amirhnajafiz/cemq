@@ -1,6 +1,7 @@
 package mqtt
 
 import (
+	"fmt"
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -55,11 +56,7 @@ func (c cli) CheckHealth() (string, error) {
 
 	<-done
 
-	return time.Since(start).String(), nil
-}
-
-func (c cli) Topics() ([]string, error) {
-	return nil, nil
+	return fmt.Sprintf("ping-pong duration %s", time.Since(start).String()), nil
 }
 
 func (c cli) Publish(topic string, message []byte) error {
