@@ -2,7 +2,8 @@ package config
 
 import (
 	"fmt"
-	"os"
+
+	"github.com/amirhnajafiz/cemq/internal/utils"
 )
 
 type config struct{}
@@ -12,8 +13,12 @@ func Select(name string) string {
 	path := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONTEXT)
 	out := fmt.Sprintf("%s/%s/%s/%s.json", ROOT, BASE, CONFIGS, name)
 
-	if err := os.WriteFile(path, []byte(out), os.FileMode(os.O_RDWR)); err != nil {
-		return fmt.Errorf("failed to select context: %w", err).Error()
+	if ok, err := utils.Exists(out); err == nil && !ok {
+		return fmt.Errorf("context %s not found", err).Error()
+	}
+
+	if err := utils.WriteFile(path, out); err != nil {
+		return fmt.Errorf("failed to select %s context: %w", name, err).Error()
 	}
 
 	return fmt.Sprintf("selected: %s", name)

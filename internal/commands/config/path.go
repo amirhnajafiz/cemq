@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/amirhnajafiz/cemq/internal/utils"
 )
@@ -14,12 +13,12 @@ const (
 	CONTEXT = "config.txt"
 )
 
-// SetupBaseConfigDirectories makes the following entities
+// setupBaseConfigDirectories makes the following entities
 // .config/
 // .config/cemq/
 // .conifg/cemq/configs/
 // .config/cemq/config.txt
-func SetupBaseConfigDirectories() {
+func setupBaseConfigDirectories() {
 	if ok, err := utils.Exists(ROOT); err == nil && !ok {
 		utils.Mkdir(ROOT)
 	}
@@ -33,16 +32,4 @@ func SetupBaseConfigDirectories() {
 	if ok, err := utils.Exists(configsDirectory); err == nil && !ok {
 		utils.Mkdir(configsDirectory)
 	}
-}
-
-// LoadCurrentContext returns the current context path
-func LoadCurrentContext() (string, error) {
-	path := fmt.Sprintf("%s/%s/%s", ROOT, BASE, CONTEXT)
-
-	bytes, err := os.ReadFile(path)
-	if err != nil {
-		return "", fmt.Errorf("failed to load current context: %w", err)
-	}
-
-	return string(bytes), nil
 }

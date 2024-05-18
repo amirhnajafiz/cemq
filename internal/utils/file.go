@@ -2,6 +2,25 @@ package utils
 
 import "os"
 
+// ReadFile returns the string value of a file
+func ReadFile(path string) (string, error) {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	return string(bytes), nil
+}
+
+// WriteFile creates a new file with given content
+func WriteFile(path, content string) error {
+	if err := os.WriteFile(path, []byte(content), os.FileMode(os.O_RDWR)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Mkdir is used to created a directory
 func Mkdir(path string) {
 	os.Mkdir(path, os.ModeDir)
