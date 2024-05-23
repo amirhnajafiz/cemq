@@ -3,6 +3,7 @@ package bench
 import (
 	"log"
 	"sync"
+	"time"
 
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
 	"github.com/amirhnajafiz/cemq/internal/utils"
@@ -63,7 +64,9 @@ func (b bench) generatePublishters(topic string, msgs, number int) {
 				}
 
 				// publish a message over the topic
-				if err := b.conn.Publish(topic, []byte("testing message to be sent")); err != nil {
+				if err := b.conn.Publish(topic, model.Message{
+					Sent: time.Now(),
+				}.ToBytes()); err != nil {
 					log.Println(err)
 				} else {
 					index++ // increase index if succeed
