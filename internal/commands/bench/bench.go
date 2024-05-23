@@ -36,7 +36,9 @@ func (b bench) generateConsumers(topic string, msgs, number int) {
 			}
 
 			for {
-				<-channel
+				msg := model.CreateMessageFromBytes(<-channel)
+				msg.TTL = int(time.Since(msg.Sent))
+
 				counter.Inc()
 			}
 		}()

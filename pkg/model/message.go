@@ -8,6 +8,7 @@ import (
 // Message is used as a packet to be sent over EMQX cluster
 type Message struct {
 	Sent time.Time `json:"sent"`
+	TTL  int
 }
 
 func (m Message) ToBytes() []byte {
