@@ -2,6 +2,7 @@ package bench
 
 import (
 	"log"
+	"sync"
 
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
 	"github.com/amirhnajafiz/cemq/internal/utils"
@@ -43,30 +44,37 @@ func (b bench) generateConsumers(topic string, msgs, number int) {
 	counter.Wait()
 }
 
-// generatePublishters create a number of publishers to publish msgs over a topic
+// generatePublishters create a number of publishers to publish msgs over a topic.
+// creating maximum `number` go-routines
 func (b bench) generatePublishters(topic string, msgs, number int) {
-	counter := utils.NewSafeCounter(msgs)
-	channel := make(chan bool)
+	// create a wg from the number of publishers
+	var wg sync.WaitGroup
 
+	// create a go-routine for each publisher to publish N messages
 	for i := 0; i < number; i++ {
+		wg.Add(1)
+
 		go func() {
+			index := 0
 			for {
-				<-channel
+				// check for limit
+				if index == msgs {
+					break
+				}
 
-				if err := b.conn.Publish(topic, []byte("testing message to send")); err != nil {
+				// publish a message over the topic
+				if err := b.conn.Publish(topic, []byte("testing message to be sent")); err != nil {
 					log.Println(err)
-
-					channel <- true
 				} else {
-					counter.Inc()
+					index++ // increase index if succeed
 				}
 			}
+
+			// release wg
+			wg.Done()
 		}()
 	}
 
-	for i := 0; i < msgs; i++ {
-		channel <- true
-	}
-
-	counter.Wait()
+	// wait for all go-routines
+	wg.Wait()
 }
