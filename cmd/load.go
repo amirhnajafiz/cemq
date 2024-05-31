@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 
+	"github.com/amirhnajafiz/cemq/internal/commands/load"
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
 	"github.com/amirhnajafiz/cemq/pkg/model"
 
@@ -44,5 +45,13 @@ func (l Load) main() {
 	// check connection
 	if err := conn.Connect(); err != nil {
 		log.Fatalf("cannot access the cluster: %v", err)
+	}
+
+	// create a new manager
+	manager := load.New(conn)
+
+	// start the load generate
+	if err := manager.Generate(l.Input); err != nil {
+		log.Fatalf("failed to start the load: %v", err)
 	}
 }

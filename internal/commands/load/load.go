@@ -1,4 +1,4 @@
-package bench
+package load
 
 import (
 	"github.com/amirhnajafiz/cemq/internal/mqtt"
