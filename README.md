@@ -1,12 +1,7 @@
 # CEMQ
 
-A EMQX client-cli to test and benchmark your EMQX clusters.
-
-## Components
-
-- EMQX-cli
-- Config
-- Progress Bar
+CEMQ is an EMQX client-cli to check EMQX clusters. It provides commands to check a EMQX
+cluster as a client. It is like a blackbox for monitoring EMQX behaviour.
 
 ## Commands overview
 
@@ -15,10 +10,4 @@ A EMQX client-cli to test and benchmark your EMQX clusters.
 | help | returns a full guide and description about CEMQ commands | - | - |
 | config | manages the CEMQ cluster configuration | - | select, list, info |
 | cluster | handles the cluster connection and health commands | - | connection, health |
-| bench | runs benchmarks on the selected EMQX cluster | topic, pub, sub, progress | - |
-
-### Commands details
-
-#### config
-
-All EMQX config files are in ```.json``` format and stored in ```~/.config/cemq/configs``` directory. There is also a ```config.txt``` file which stores the current selection.
+| load | generates a load on the EMQX cluster | topics, pubs, subs, interval | - |
