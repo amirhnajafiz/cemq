@@ -2,6 +2,7 @@ package load
 
 import (
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -49,6 +50,55 @@ func (l *load) Generate(input *model.Load) error {
 	return nil
 }
 
+// handleTopic is used to create publishers and subscribers over a topic
 func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duration) error {
-	return nil
+	var (
+		killSwitch = make(chan int) // create a kill switch channel to sync workers on errors
+		errorlog   error
+		lock       sync.Mutex
+	)
+
+	// create subscribers
+	for i := 0; i < subs; i++ {
+		go func() {
+			// subscribe to the topic
+			channel, err := l.conn.Subscribe(topic)
+			if err != nil {
+				lock.Lock()
+				errorlog = err
+				lock.Unlock()
+
+				killSwitch <- 1
+			}
+
+			// start getting data
+			for {
+				data := <-channel
+				log.Printf("consume %d bytes\n", len(data))
+			}
+		}()
+	}
+
+	// create publishers
+	for i := 0; i < pubs; i++ {
+		go func() {
+			// create a new ticker
+			ticker := time.NewTicker(period)
+			for range ticker.C {
+				// publish a message over the topic
+				if err := l.conn.Publish(topic, []byte("a message to be sent")); err != nil {
+					lock.Lock()
+					errorlog = err
+					lock.Unlock()
+
+					killSwitch <- 1
+				}
+			}
+		}()
+	}
+
+	// wait for an error
+	<-killSwitch
+
+	return errorlog
 }
