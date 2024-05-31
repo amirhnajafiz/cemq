@@ -32,7 +32,7 @@ func (l Load) Command() *cobra.Command {
 	// getting input parameters from flags
 	root.Flags().IntVar(&l.Input.Publishers, "pubs", 1, "number of publishers")
 	root.Flags().IntVar(&l.Input.Subscribers, "subs", 1, "number of subscriptions")
-	root.Flags().IntVar(&l.Input.Topics, "topic", 1, "topic name")
+	root.Flags().IntVar(&l.Input.Topics, "topics", 1, "number of test topics")
 	root.Flags().IntVar(&l.Input.PublishIntervals, "interval", 1000, "publish interval in miliseconds")
 
 	return root
