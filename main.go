@@ -29,7 +29,7 @@ func main() {
 	// add commands
 	root.AddCommand(
 		cmd.Config{}.Command(),
-		cmd.Bench{
+		cmd.Load{
 			Cfg:   cfg,
 			Debug: debug,
 		}.Command(),
