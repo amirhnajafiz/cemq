@@ -41,6 +41,11 @@ func (l *load) Generate(input *model.Load) error {
 	// wait for all topics to stop
 	wg.Wait()
 
+	// check for errors
+	if len(l.errors) > 0 {
+		return l.errors[0]
+	}
+
 	return nil
 }
 
