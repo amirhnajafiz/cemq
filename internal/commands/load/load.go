@@ -11,15 +11,20 @@ import (
 )
 
 type load struct {
-	conn   mqtt.CLI
-	lock   sync.Mutex
-	errors []error
+	conn    mqtt.CLI
+	lock    sync.Mutex
+	errors  []error
+	packets chan *model.Packet
 }
 
 // Generate method creates publishers and subscribers according to the number of topics
 func (l *load) Generate(input *model.Load) error {
 	// create a waitgroup to manage sub-processes
 	var wg sync.WaitGroup
+
+	// create packet handler
+	l.packets = make(chan *model.Packet)
+	go l.handlePackets()
 
 	// create interval
 	interval := time.Duration(input.PublishIntervals) * time.Millisecond
@@ -74,7 +79,15 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 			// start getting data
 			for {
 				data := <-channel
+
+				packet := model.Packet{
+					Timestamp: time.Now(),
+					Payload:   data,
+				}
+
 				log.Printf("consume %d bytes\n", len(data))
+
+				l.packets <- &packet
 			}
 		}()
 	}
@@ -86,7 +99,7 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 			ticker := time.NewTicker(period)
 			for range ticker.C {
 				// publish a message over the topic
-				if err := l.conn.Publish(topic, []byte("a message to be sent")); err != nil {
+				if err := l.conn.Publish(topic, model.Message{Timestamp: time.Now()}.ToBytes()); err != nil {
 					lock.Lock()
 					errorlog = err
 					lock.Unlock()
@@ -101,4 +114,12 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 	<-killSwitch
 
 	return errorlog
+}
+
+// handlePacket extracts message data to check cluster latency
+func (l *load) handlePackets() {
+	for packet := range l.packets {
+		msg := model.CreateMessageFromBytes(packet.Payload)
+		log.Printf("latency: %d miliseconds", packet.Timestamp.Sub(msg.Timestamp).Milliseconds())
+	}
 }
