@@ -5,13 +5,13 @@ import (
 	"github.com/amirhnajafiz/cemq/pkg/model"
 )
 
-// Manager handles benchmakr commands
+// Manager handles load commands
 type Manager interface {
-	Benchmark(bench *model.Benchmark) *model.Upshot
+	Generate(input *model.Load) error
 }
 
 func New(conn mqtt.CLI) Manager {
-	return &bench{
+	return &load{
 		conn: conn,
 	}
 }
