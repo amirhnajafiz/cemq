@@ -24,4 +24,5 @@ pwa="$( pwd )"  # Change this path to your executable path
 echo "export PATH=\"$pwa:\$PATH\"" >> "$profile_file"
 echo "PATH updated in $profile_file"
 
+echo "Please run source .zshrc/.bash_profice/.bashrc before running CEMQ commands."
 echo "CEMQ installation and setup complete."
