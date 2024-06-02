@@ -65,7 +65,7 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 
 	// create subscribers
 	for i := 0; i < subs; i++ {
-		go func() {
+		go func(index int) {
 			// subscribe to the topic
 			channel, err := l.conn.Subscribe(topic)
 			if err != nil {
@@ -74,6 +74,7 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 				lock.Unlock()
 
 				killSwitch <- 1
+				return
 			}
 
 			// start getting data
@@ -85,16 +86,16 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 					Payload:   data,
 				}
 
-				log.Printf("consume %d bytes\n", len(data))
+				log.Printf("[%d] consume %d bytes\n", index, len(data))
 
 				l.packets <- &packet
 			}
-		}()
+		}(i + 1)
 	}
 
 	// create publishers
 	for i := 0; i < pubs; i++ {
-		go func() {
+		go func(index int) {
 			// create a new ticker
 			ticker := time.NewTicker(period)
 			for range ticker.C {
@@ -105,9 +106,12 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 					lock.Unlock()
 
 					killSwitch <- 1
+					return
 				}
+
+				log.Printf("[%d] published.\n", index)
 			}
-		}()
+		}(i + 1)
 	}
 
 	// wait for an error
@@ -118,8 +122,10 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 
 // handlePacket extracts message data to check cluster latency
 func (l *load) handlePackets() {
+	log.Println("CEMQ monitoring started.")
+
 	for packet := range l.packets {
 		msg := model.CreateMessageFromBytes(packet.Payload)
-		log.Printf("latency: %d miliseconds", packet.Timestamp.Sub(msg.Timestamp).Milliseconds())
+		log.Printf("cluster latency: %d miliseconds", packet.Timestamp.Sub(msg.Timestamp).Milliseconds())
 	}
 }
