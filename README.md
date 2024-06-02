@@ -17,4 +17,4 @@ In this table you can see all CEMQ commands and their usages. For more details y
 
 ## Install
 
-After clonning into the project repository, run `make install`. Now you can run `./cemq` cli. To make sure that your installation was successful, run `make test`.
+After clonning into the project repository, run `make install`. Now you can run `cemq` cli. To make sure that your installation was successful, run `make test`.
