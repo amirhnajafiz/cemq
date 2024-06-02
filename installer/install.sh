@@ -27,4 +27,4 @@ echo "PATH updated in $profile_file"
 # Reloading profile
 source "$profile_file"
 
-echo "CEMQXinstallation and setup complete."
+echo "CEMQ installation and setup complete."
