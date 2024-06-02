@@ -20,7 +20,7 @@ func main() {
 
 	// add base flags
 	root.PersistentFlags().BoolVar(&debug, "debug", false, "enabling MQTT debug messages")
-	root.PersistentFlags().BoolVar(&logs, "logs-disable", false, "disabling publisher and subscriber logs")
+	root.PersistentFlags().BoolVar(&logs, "logs-enable", true, "disabling or enabling publisher and subscriber logs")
 
 	// load configs
 	cfg, err := config.Load()
