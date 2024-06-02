@@ -1,0 +1,7 @@
+installer/
+
+.gitignore
+cemq/
+main
+Makefile
+README.md

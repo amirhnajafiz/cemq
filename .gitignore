@@ -1,5 +1,8 @@
+# exe files
 main
 cemq
+
+# os files
 .idea/
 .vscode/
 .DS_Store
