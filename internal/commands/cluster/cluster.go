@@ -10,6 +10,10 @@ type cluster struct {
 
 // CheckHealth measures the cluster status by a ping-pong mechanism
 func (c cluster) CheckHealth() string {
+	if err := c.conn.Connect(); err != nil {
+		return err.Error()
+	}
+
 	msg, err := c.conn.CheckHealth()
 	if err != nil {
 		return err.Error()
