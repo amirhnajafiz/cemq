@@ -10,8 +10,9 @@ type Manager interface {
 	Generate(input *model.Load) error
 }
 
-func New(conn mqtt.CLI) Manager {
+func New(conn mqtt.CLI, logsFlag bool) Manager {
 	return &load{
-		conn: conn,
+		logsFlag: logsFlag,
+		conn:     conn,
 	}
 }

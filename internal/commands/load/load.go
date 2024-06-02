@@ -11,10 +11,11 @@ import (
 )
 
 type load struct {
-	conn    mqtt.CLI
-	lock    sync.Mutex
-	errors  []error
-	packets chan *model.Packet
+	logsFlag bool
+	conn     mqtt.CLI
+	lock     sync.Mutex
+	errors   []error
+	packets  chan *model.Packet
 }
 
 // Generate method creates publishers and subscribers according to the number of topics
@@ -86,7 +87,9 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 					Payload:   data,
 				}
 
-				log.Printf("[%d] consume %d bytes\n", index, len(data))
+				if l.logsFlag {
+					log.Printf("[%d] consume %d bytes\n", index, len(data))
+				}
 
 				l.packets <- &packet
 			}
@@ -109,7 +112,9 @@ func (l *load) handleTopic(topic string, pubs int, subs int, period time.Duratio
 					return
 				}
 
-				log.Printf("[%d] published.\n", index)
+				if l.logsFlag {
+					log.Printf("[%d] published.\n", index)
+				}
 			}
 		}(i + 1)
 	}

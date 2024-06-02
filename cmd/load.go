@@ -15,6 +15,7 @@ type Load struct {
 	Input *model.Load
 	Cfg   *model.Config
 	Debug bool
+	Logs  bool
 }
 
 func (l Load) Command() *cobra.Command {
@@ -48,7 +49,7 @@ func (l Load) main() {
 	}
 
 	// create a new manager
-	manager := load.New(conn)
+	manager := load.New(conn, l.Logs)
 
 	// start the load generate
 	if err := manager.Generate(l.Input); err != nil {
