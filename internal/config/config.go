@@ -7,7 +7,15 @@ import (
 )
 
 // Load returns the current context as a config struct
-func Load() (*model.Config, error) {
+func Load(server string, user string, pass string) (*model.Config, error) {
+	if len(server) > 0 {
+		return &model.Config{
+			Server:   server,
+			Username: user,
+			Password: pass,
+		}, nil
+	}
+
 	path, err := utils.ReadFile(adr.GetContext())
 	if err != nil {
 		return nil, err
