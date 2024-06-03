@@ -1,5 +1,9 @@
 # CEMQ
 
+![GitHub top language](https://img.shields.io/github/languages/top/amirhnajafiz/cemq)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/amirhnajafiz/cemq)
+![GitHub Tag](https://img.shields.io/github/v/tag/amirhnajafiz/cemq)
+
 CEMQ is an EMQX client-cli to check EMQX clusters as a client. It provides commands to overview an EMQX
 cluster as a user, like a blackbox for monitoring EMQX clusters behaviour. This cli is useful when you want to test your EMQX cluster as a normal user.
 
@@ -20,6 +24,22 @@ In this table you can see all CEMQ commands and their usages. For more details y
 ## Install
 
 After clonning into the project repository, run `make install`. Now you can run `cemq` cli. To make sure that your installation was successful, run `make test`.
+
+### configs
+
+CEMQ stores cluster configs in `~/.config/cemq` directory. In `configs` directory you can create your configs as the following template. Make sure to save your files with `.json` extention.
+
+```json
+{
+  "server": "tcp://0.0.0.0:1883",
+  "description": "Default EMQX cluster",
+  "username": "",
+  "password": ""
+}
+```
+
+You can also pass `server`, `username`, and `password` as global flags in commands. They will override
+the current selected config.
 
 ## Docker
 
