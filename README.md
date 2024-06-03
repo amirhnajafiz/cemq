@@ -9,7 +9,7 @@ to test your EMQX cluster as a client.
 In this table you can see all CEMQ commands and their usages. For more details you can install the cli and run each command with `--help` flag.
 
 | Command | Description | Flags | SubCommands |
-|:-------------:|------------------|-------|-----------------------|
+|:-------------:|------------------|:-----:|:---------------------:|
 | help | returns a full guide and description about CEMQ commands | - | - |
 | config | manages the CEMQ cluster configuration | - | select, list, info |
 | cluster | handles the cluster connection and health commands | - | connection, health |
