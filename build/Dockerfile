@@ -14,3 +14,12 @@ COPY go.mod go.sum ./
 
 # compile go program
 RUN go build -o main
+
+# second stage
+FROM alpine:latest
+
+WORKDIR /usr/bin/cemq
+
+COPY --from=builder /main /cemq
+
+ENTRYPOINT [ "/cemq" ]
